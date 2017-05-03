@@ -1,0 +1,3 @@
+imake4mycity_homepage:
+    path:     /
+    defaults: { _controller: Imake4mycityBundle:Default:index }
