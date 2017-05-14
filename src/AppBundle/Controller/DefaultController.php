@@ -8,9 +8,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 
 use AppBundle\Entity\User;
+use AppBundle\Entity\Podometer;
 
 
-use AppBundle\Form\UserType;
+use AppBundle\Form\PodometerType;
+
+use DateTime;
 
 class DefaultController extends Controller
 {
@@ -23,50 +26,66 @@ class DefaultController extends Controller
         //return $this->render('default/index.html.twig', [
         //    'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
         //]);
-
-        return $this->render('AppBundle:Default:home.html.twig');
+        $em = $this->getDoctrine()->getManager();
+        $res = $em->getRepository('AppBundle:Podometer')->sumAll();
+        return $this->render('AppBundle:Default:home.html.twig', array(
+            'res' => $res
+        ));
     }
 
-    
-    public function loginAction()
-    {
-        //Si le visiteur est déjà identifié, on le redirige vers l'accueil
-        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            return $this->redirectToRoute('home');
-        }
 
-        // Le service authentication_utils permet de récupérer le nom d'utilisateur
-        // et l'erreur dans le cas où le formulaire a déjà été soumis mais était invalide
-        // (mauvais mot de passe par exemple)
-        $authenticationUtils = $this->get('security.authentication_utils');
-        return $this->render('AppBundle:Default:login.html.twig', array(
-            'last_username' => $authenticationUtils->getLastUsername(),
-            'error'         => $authenticationUtils->getLastAuthenticationError(),
+    /**
+     * @Route("/podometers", name="podometers")
+     **/
+    public function podometersAction(Request $request)
+    {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $podometers = $em->getRepository('AppBundle:Podometer')->findByUser($user);
+
+        return $this->render('AppBundle:Default:podometers.html.twig', array(
+            'podometers' => $podometers,
         ));
     }
 
     /**
-     * @Route("/user/{user_id}", name="user")
+     * @Route("/podometer/{podometer_id}", name="podometer")
      **/
-    public function userEditAction($user_id, Request $request)
+    public function podometerEditAction($podometer_id, Request $request)
     {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
         $em = $this->getDoctrine()->getManager();
-        if($user_id == '0'){
-            $user = new User();
+        if($podometer_id == '0'){
+            $podometer = new Podometer();
+            $podometer->user = $user;
+            $podometer->date = new \Datetime();
+
         } else {
-            $user = $em->getRepository('AppBundle:User')->findOneById($user_id);
+            $podometer = $em->getRepository('AppBundle:Podometer')->findOneById($podometer_id);
         }
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(PodometerType::class, $podometer);
         $form->handleRequest($request);
 
 
         if ($form->isSubmitted()) {
-            $em->persist($campagne);
+            $em->persist($podometer);
             $em->flush();
-            return $this->redirectToRoute('campagnes');
+            return $this->redirectToRoute('podometers');
         }
         return $this->render('AppBundle::base_form.html.twig', array(
             'form' => $form->createView(),
         ));
     }
+
+    /**
+     * @Route("api/pas", name="pas")
+     **/
+    public function produitNameApi(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $res = $em->getRepository('AppBundle:Podometer')->sumAll();
+
+        return $this->json($res);
+    }
+
 }

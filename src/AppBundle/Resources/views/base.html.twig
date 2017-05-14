@@ -26,7 +26,10 @@
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                     <li><a href="/">Home</a></li>
-                    <li><a href="/campagnes">Ajouter mon podomètre</a></li>
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <li><a href="/podometers">Mes exploits</a></li>
+                    <li><a href="/podometer/0">Ajouter ma marche</a></li>
+                    {% endif %}
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <!--button(type='button', class='btn btn-default navbar-btn') Sign in-->

@@ -1,0 +1,25 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block body %}
+<div class="container bs-docs-container">
+    <div class="panel panel-default", style="width:100%">
+        <!-- Default panel contents -->
+        <div class="panel-heading">
+            <button type="button" class="btn btn-primary" onclick="window.location.href='/podometer/0'">ADD</button>
+            Mes marches
+        </div>
+        <table class="table">
+            <tr>
+                <th>Date</th>
+                <th>Nbr Pas</th>
+            </tr>
+            {% for podometer in podometers %}
+            <tr>
+                <td>{{podometer.get_date()}}</td>
+                <td>{{podometer.value}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}
