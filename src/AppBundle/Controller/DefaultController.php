@@ -27,9 +27,7 @@ class DefaultController extends Controller
         return $this->render('AppBundle:Default:home.html.twig');
     }
 
-    /**
-    * @Route("/login", name="login")
-    */
+    
     public function loginAction()
     {
         //Si le visiteur est déjà identifié, on le redirige vers l'accueil

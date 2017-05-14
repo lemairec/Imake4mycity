@@ -1,0 +1,29 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+
+{% if form is defined %}
+{% form_theme form _self %}
+{% endif %}
+
+{% block form_row %}
+<div class="form-group row">
+    <div class="col-sm-2">
+        {{ form_label(form) }}
+    </div>
+
+    <div class="col-sm-10">
+        {{ form_widget(form, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    {{ form_errors(form) }}
+</div>
+{% endblock form_row %}
+
+
+{% block body %}
+    <div class="container bs-docs-container">
+    <div class="well">
+        {% block fos_user_content %}
+        {% endblock fos_user_content %}
+    </div>
+</div>
+{% endblock %}

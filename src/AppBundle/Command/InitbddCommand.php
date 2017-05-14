@@ -45,7 +45,7 @@ class InitbddCommand extends ContainerAwareCommand
             // ...
         }
 
-        $this->addAdmin();
+        //$this->addAdmin();
         $output->writeln('Command result hehe.');
     }
 
