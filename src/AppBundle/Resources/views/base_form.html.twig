@@ -19,9 +19,14 @@
 
 
 {% block body %}
-    <div class="container bs-docs-container">
-    <div class="well">
-        {{ form(form) }}
-    </div>
+
+<div class="container bs-docs-container">
+<div class="well">
+    {{ form_start(form) }}
+    {{ form_row(form.date, {'attr': {'class': 'form-control js-datepicker'}}) }}
+    {{ form_row(form.value, {'attr': {'class': 'form-control'}}) }}
+    {{ form_row(form.save) }}
+    {{ form_end(form) }}
 </div>
-{% endblock %}
+</div>
+{% endblock body %}
