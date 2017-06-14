@@ -18,6 +18,27 @@ use DateTime;
 class DefaultController extends Controller
 {
     /**
+     * @Route("/test_mail", name="test_mail")
+     */
+     public function indexAction2()
+    {
+        $message = \Swift_Message::newInstance()
+        ->setSubject('Hello Email')
+        ->setFrom('send@example.com')
+        ->setTo('lemairec02@gmail.com')
+        ->setBody('')
+    ;
+    $this->get('mailer')->send($message);
+
+
+        // or, you can also fetch the mailer service this way
+        // $this->get('mailer')->send($message);
+
+        return $this->redirectToRoute("homepage");
+    }
+
+
+    /**
      * @Route("/", name="homepage")
      */
     public function indexAction(Request $request)
@@ -28,8 +49,14 @@ class DefaultController extends Controller
         //]);
         $em = $this->getDoctrine()->getManager();
         $res = $em->getRepository('AppBundle:Podometer')->sumAll();
+        $res_day = $em->getRepository('AppBundle:Podometer')->sumAllDay();
+        $res_month = $em->getRepository('AppBundle:Podometer')->sumAllMonth();
+        $podometers = $em->getRepository('AppBundle:Podometer')->getLast5();
         return $this->render('AppBundle:Default:home.html.twig', array(
-            'res' => $res
+            'podometers' => $podometers,
+            'res' => $res,
+            'res_day' => $res_day,
+            'res_month' => $res_month
         ));
     }
 
@@ -44,6 +71,19 @@ class DefaultController extends Controller
         $podometers = $em->getRepository('AppBundle:Podometer')->findByUser($user);
 
         return $this->render('AppBundle:Default:podometers.html.twig', array(
+            'podometers' => $podometers,
+        ));
+    }
+
+    /**
+     * @Route("/all", name="all")
+     **/
+    public function allAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $podometers = $em->getRepository('AppBundle:Podometer')->findAll();
+
+        return $this->render('AppBundle:Default:all.html.twig', array(
             'podometers' => $podometers,
         ));
     }

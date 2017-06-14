@@ -20,4 +20,47 @@ class PodometerRepository extends \Doctrine\ORM\EntityRepository
         $res = $statement->fetchAll();
         return $res[0]["SUM(value)"];
     }
+
+    public function sumAllMonth(){
+        $d = new \DateTime();
+        $sql = "SELECT SUM(value) FROM podometer where date >= '".$d->format('Y-m')."-01'";
+
+        $em = $this->getEntityManager();
+        $connection = $em->getConnection();
+        $statement = $connection->prepare($sql);
+        $statement->execute();
+        $res = $statement->fetchAll();
+        $res2 = $res[0]["SUM(value)"];
+        if($res2){
+            return $res2;
+        } else {
+            return 0;
+        }
+    }
+
+    public function sumAllDay(){
+        $d = new \DateTime();
+        $sql = "SELECT SUM(value) FROM podometer where date >= '".$d->format('Y-m-d')."'";
+
+        $em = $this->getEntityManager();
+        $connection = $em->getConnection();
+        $statement = $connection->prepare($sql);
+        $statement->execute();
+        $res = $statement->fetchAll();
+        $res2 = $res[0]["SUM(value)"];
+        if($res2){
+            return $res2;
+        } else {
+            return 0;
+        }
+    }
+
+    public function getLast5(){
+        $query = $this->createQueryBuilder('p')
+            ->orderBY('p.date')
+            ->setMaxResults(5)
+            ->getQuery();
+
+        return $query->getResult();
+    }
 }

@@ -2,25 +2,20 @@
 
 {% block body %}
 <div class="container bs-docs-container">
-    <div class="well">
-        <h2 style="text-align: center">Château-Thierry a parcouru {{res}} pas depuis le 20 mai 2017</h2>
-        <h3 style="text-align: center">Aujourd'hui Château-Thierry a parcouru {{res_day}} pas</h3>
-        <h3 style="text-align: center">Ce mois-ci Château-Thierry a parcouru {{res_month}} pas</h3>
-        <h3 style="text-align: center">Cette année Château-Thierry a parcouru {{res}} pas</h3>
-    </div>
-
     <div class="panel panel-default", style="width:100%">
         <!-- Default panel contents -->
         <div class="panel-heading">
-            Les 5 derniers marcheurs
+            All
         </div>
         <table class="table">
             <tr>
+                <th>Date</th>
                 <th>Pseudo</th>
                 <th>Nbr Pas</th>
             </tr>
             {% for podometer in podometers %}
             <tr>
+                <td>{{podometer.getCompleteDateStr()}}</td>
                 <td>{{podometer.user.username}}</td>
                 <td>{{podometer.value}}</td>
             </tr>

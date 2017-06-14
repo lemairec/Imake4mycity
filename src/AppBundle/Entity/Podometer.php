@@ -45,4 +45,8 @@ class Podometer
     function get_date(){
         return $this->date->format(' d/m/Y');
     }
+
+    function getCompleteDateStr(){
+        return $this->date->format(' d/m/Y h:m');
+    }
 }
