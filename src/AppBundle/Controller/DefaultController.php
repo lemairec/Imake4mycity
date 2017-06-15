@@ -81,7 +81,7 @@ class DefaultController extends Controller
     public function allAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $podometers = $em->getRepository('AppBundle:Podometer')->findAll();
+        $podometers = $em->getRepository('AppBundle:Podometer')->getAll();
 
         return $this->render('AppBundle:Default:all.html.twig', array(
             'podometers' => $podometers,

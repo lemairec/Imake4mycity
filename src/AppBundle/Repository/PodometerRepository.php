@@ -63,4 +63,12 @@ class PodometerRepository extends \Doctrine\ORM\EntityRepository
 
         return $query->getResult();
     }
+
+    public function getAll(){
+        $query = $this->createQueryBuilder('p')
+            ->orderBY('p.date')
+            ->getQuery();
+
+        return $query->getResult();
+    }
 }
