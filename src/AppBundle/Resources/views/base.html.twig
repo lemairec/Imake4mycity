@@ -25,58 +25,28 @@
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                    <li><a href="/">Home</a></li>
-                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                    <li><a href="/podometers">Mes exploits</a></li>
-                    <li><a href="/podometer/0">Ajouter ma marche</a></li>
-                    {% endif %}
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <!--button(type='button', class='btn btn-default navbar-btn') Sign in-->
-                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                        <li><a href="{{ path('fos_user_profile_show') }}">Profile</a></li>
-                        <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
-                    {% else %}
-                        <li><a href="/register">Créer Un compte</a></li>
-                        <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
+                        <li><a href="/">Home</a></li>
+                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        <li><a href="/podometers">Mes exploits</a></li>
+                        <li><a href="/podometer/0">Ajouter ma marche</a></li>
+                        {% endif %}
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <!--button(type='button', class='btn btn-default navbar-btn') Sign in-->
+                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                            <li><a href="{{ path('fos_user_profile_show') }}">Profile</a></li>
+                            <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
+                        {% else %}
+                            <li><a href="/register">Créer Un compte</a></li>
+                            <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
 
-                    {% endif %}
-            </ul>
-        </div>
-    </div>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
         </nav>
-
-        <div class="container bs-docs-container">
-            {% if campagnes is defined %}
-            <select class="selectpicker" id="dynamic_select">>
-                {%for campagne in campagnes %}
-                <option value="{{campagne.id}}" {%if campagne.id == campagne_id %} selected {%endif%}>{{campagne.name}}</option>
-                {%endfor%}
-            </select>
-            {% endif %}
-        </div>
         {% block body %}{% endblock %}
     </body>
-    <script>
-$(function(){
-    // bind change event to select
-    $('#dynamic_select').on('change', function () {
-        var val = $(this).val(); // get selected value
-        if (val) { // require a URL
-            var url = window.location.href;
-            if(location.search){
-                url = url.replace(location.search,"?campagne_id="+val);
-            } else {
-                url = url + "?campagne_id="+val;
-            }
-            console.log(url);
-
-            window.location = url; // redirect
-        }
-        return false;
-    });
-});
-    </script>
     <script>
 $(document).ready(function() {
     $('.js-datepicker').datepicker({

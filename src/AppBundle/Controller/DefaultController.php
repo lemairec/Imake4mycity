@@ -112,7 +112,7 @@ class DefaultController extends Controller
             $em->flush();
             return $this->redirectToRoute('podometers');
         }
-        return $this->render('AppBundle::base_form.html.twig', array(
+        return $this->render('AppBundle:Default:podometer.html.twig', array(
             'form' => $form->createView(),
         ));
     }
